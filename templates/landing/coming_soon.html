@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+{%load static%}
+<html lang="en" data-bs-theme="light">
+  <head>
+    <meta charset="utf-8">
+
+    <!-- Viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover">
+    
+        <!-- SEO meta tags -->
+    <!-- SEO meta tags -->
+    <title>XoPricer | Smart Repricing & Analytics for Amazon Sellers</title>
+    <meta name="description" content="XoPricer helps Amazon sellers win the Buy Box with advanced repricing and detailed analytics. Optimize pricing, boost sales, and maximize profits. Coming soon!">
+    <meta name="keywords" content="Amazon repricing, Buy Box, Amazon seller tools, FBA analytics, e-commerce optimization, repricer, dynamic pricing, sales performance, competitive pricing">
+    <meta name="author" content="XoPricer">
+
+    <!-- Webmanifest + Favicon / App icons -->
+    {% comment %} <link rel="manifest" href="manifest.json"> {% endcomment %}
+    <link rel="icon" type="image/png" href="{% static 'assets/app-icons/web/icon-512.png' %}" sizes="32x32">
+    <link rel="apple-touch-icon" href="{% static 'assets/app-icons/web/icon-192.png' %}">
+      
+    <!-- Theme switcher (color modes) -->
+    <script src="{% static 'assets/js/theme-switcher.js' %}"></script>
+
+    <!-- Import Google font (Inter) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet" id="google-font">
+
+    <!-- Font icons -->
+    <link rel="stylesheet" href="{% static 'assets/icons/around-icons.min.css' %}">
+
+    <!-- Theme styles + Bootstrap -->
+    <link rel="stylesheet" media="screen" href="{% static 'assets/css/theme.min.css' %}">
+
+    <!-- Customizer generated styles -->
+    <style id="customizer-styles">
+      :root{--ar-primary:#43c7d0;--ar-primary-rgb:67,199,208;--ar-link-color:#43c7d0;--ar-link-hover-color:#2aaeb7;}.btn-primary{--ar-btn-bg:#43c7d0;--ar-btn-border-color:#43c7d0;--ar-btn-hover-bg:#2aaeb7;--ar-btn-hover-border-color:#2aaeb7;--ar-btn-active-bg:#2aaeb7;--ar-btn-active-border-color:#2aaeb7;--ar-btn-disabled-bg:#43c7d0;--ar-btn-disabled-border-color:#43c7d0;}.btn-outline-primary{--ar-btn-color:#43c7d0;--ar-btn-border-color:#43c7d0;--ar-btn-hover-bg:#43c7d0;--ar-btn-hover-border-color:#43c7d0;--ar-btn-active-bg:#43c7d0;--ar-btn-active-border-color:#43c7d0;--ar-btn-disabled-color:#43c7d0;--ar-btn-disabled-border-color:#43c7d0;}.accordion-button:not(.collapsed)::after{--ar-accordion-btn-active-icon:url("data:image/svg+xml,%3csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2024%2024'%20fill='%2343c7d0'%3e%3cpath%20d='M.5%206.3c.6-.6%201.6-.6%202.3%200l9.3%209.3%209.3-9.3c.6-.6%201.6-.6%202.3%200%20.6.6.6%201.6%200%202.3L13.3%2018.8c-.6.6-1.6.6-2.3%200L.8%208.5c-.9-.8-.9-1.6-.3-2.2z'/%3e%3c/svg%3e");}
+    </style>
+
+    <!-- Page loading styles -->
+    <style>
+      .page-loading {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        -webkit-transition: all .4s .2s ease-in-out;
+        transition: all .4s .2s ease-in-out;
+        background-color: #fff;
+        opacity: 0;
+        visibility: hidden;
+        z-index: 9999;
+      }
+      [data-bs-theme="dark"] .page-loading {
+        background-color: #121519;
+      }
+      .page-loading.active {
+        opacity: 1;
+        visibility: visible;
+      }
+      .page-loading-inner {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        width: 100%;
+        text-align: center;
+        -webkit-transform: translateY(-50%);
+        transform: translateY(-50%);
+        -webkit-transition: opacity .2s ease-in-out;
+        transition: opacity .2s ease-in-out;
+        opacity: 0;
+      }
+      .page-loading.active > .page-loading-inner {
+        opacity: 1;
+      }
+      .page-loading-inner > span {
+        display: block;
+        font-family: "Inter", sans-serif;
+        font-size: 1rem;
+        font-weight: normal;
+        color: #6f788b;
+      }
+      [data-bs-theme="dark"] .page-loading-inner > span {
+        color: #fff;
+        opacity: .6;
+      }
+      .page-spinner {
+        display: inline-block;
+        width: 2.75rem;
+        height: 2.75rem;
+        margin-bottom: .75rem;
+        vertical-align: text-bottom;
+        background-color: #d7dde2; 
+        border-radius: 50%;
+        opacity: 0;
+        -webkit-animation: spinner .75s linear infinite;
+        animation: spinner .75s linear infinite;
+      }
+      [data-bs-theme="dark"] .page-spinner {
+        background-color: rgba(255,255,255,.25);
+      }
+      @-webkit-keyframes spinner {
+        0% {
+          -webkit-transform: scale(0);
+          transform: scale(0);
+        }
+        50% {
+          opacity: 1;
+          -webkit-transform: none;
+          transform: none;
+        }
+      }
+      @keyframes spinner {
+        0% {
+          -webkit-transform: scale(0);
+          transform: scale(0);
+        }
+        50% {
+          opacity: 1;
+          -webkit-transform: none;
+          transform: none;
+        }
+      }
+    </style>
+
+    <!-- Page loading scripts -->
+    <script>
+      (function () {
+        window.onload = function () {
+          const preloader = document.querySelector('.page-loading')
+          preloader.classList.remove('active')
+          setTimeout(function () {
+            preloader.remove()
+          }, 1500)
+        }
+      })()
+    </script>
+
+    
+  </head>
+
+
+  <!-- Body -->
+  <body>
+    <!-- Page loading spinner -->
+    <div class="page-loading active">
+      <div class="page-loading-inner">
+        <div class="page-spinner"></div>
+        <span>Loading...</span>
+      </div>
+    </div>
+
+    <!-- Customizer modal -->
+    <div class="modal fade" id="customizer-modal" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Your custom styles</h4>
+            <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body py-4">
+            <p class="mb-3">Grab the generated styles below. Wrap them inside <code>&lt;style&gt;</code> tag and put in the <code>&lt;head&gt;</code> section of your HTML document.</p>
+            <p class="mb-4"><span class="fw-medium">IMPORTANT:</span> In order for these styles to take effect you have to placed them below:<br><code>&lt;link rel=&quot;stylesheet&quot; media=&quot;screen&quot; href=&quot;assets/css/theme.min.css&quot;&gt;</code></p>
+            <div class="bg-secondary overflow-hidden rounded-4">
+              <pre class="text-wrap bg-transparent border-0 text-dark p-4" id="custom-generated-styles"></pre>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary w-100 w-sm-auto mb-3 mb-sm-0" type="button" data-bs-dismiss="modal">Close</button>
+            <button class="btn btn-primary w-100 w-sm-auto ms-sm-3" type="button" id="copy-styles-btn">
+              <i class="ai-copy me-2 ms-n1"></i>
+              Copy styles
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Customizer toggler -->
+    <a class="position-fixed top-50 bg-light text-dark fw-medium border rounded-pill shadow text-decoration-none" href="coming-soon-v1.html#customizer" data-bs-toggle="offcanvas" style="right: -1.75rem; margin-top: -1rem; padding: .25rem .75rem; transform: rotate(-90deg); font-size: calc(var(--ar-body-font-size) * .8125); letter-spacing: .075rem; z-index: 1030;">
+      <i class="ai-settings text-primary fs-base me-1 ms-n1"></i>
+      Customize
+    </a>
+
+    <!-- Customizer offcanvas -->
+    <div class="offcanvas offcanvas-end" id="customizer" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1">
+      <div class="offcanvas-header border-bottom">
+        <h4 class="offcanvas-title">Customize theme</h4>
+        <button class="btn-close" type="button" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body">
+        <div class="d-flex align-items-center mb-3">
+          <i class="ai-paint-roll text-body-secondary fs-4 me-2"></i>
+          <h5 class="mb-0">Colors</h5>
+        </div>
+        <div class="row row-cols-3 g-3 mb-5" id="theme-colors">
+          <div class="col">
+            <div class="text-dark fs-sm fw-medium mb-2">Primary</div>
+            <div class="color-swatch" id="theme-primary" data-color-labels="[&quot;theme-primary&quot;, &quot;primary&quot;, &quot;primary-rgb&quot;]">
+              <label class="ratio ratio-4x3 border rounded-1 cursor-pointer mb-1" for="primary" style="background-color: #448c74;" role="button"></label>
+              <input class="form-control form-control-sm" type="text" value="#448c74">
+              <input class="visually-hidden" type="color" id="primary" value="#448c74">
+            </div>
+          </div>
+          <div class="col">
+            <div class="text-dark fs-sm fw-medium mb-2">Warning</div>
+            <div class="color-swatch" id="theme-warning" data-color-labels="[&quot;theme-warning&quot;, &quot;warning&quot;, &quot;warning-rgb&quot;]">
+              <label class="ratio ratio-4x3 border rounded-1 cursor-pointer mb-1" for="warning" style="background-color: #edcb50;" role="button"></label>
+              <input class="form-control form-control-sm" type="text" value="#edcb50">
+              <input class="visually-hidden" type="color" id="warning" value="#edcb50">
+            </div>
+          </div>
+          <div class="col">
+            <div class="text-dark fs-sm fw-medium mb-2">Info</div>
+            <div class="color-swatch" id="theme-info" data-color-labels="[&quot;theme-info&quot;, &quot;info&quot;, &quot;info-rgb&quot;]">
+              <label class="ratio ratio-4x3 border rounded-1 cursor-pointer mb-1" for="info" style="background-color: #3f7fca;" role="button"></label>
+              <input class="form-control form-control-sm" type="text" value="#3f7fca">
+              <input class="visually-hidden" type="color" id="info" value="#3f7fca">
+            </div>
+          </div>
+          <div class="col">
+            <div class="text-dark fs-sm fw-medium pt-1 mb-2">Success</div>
+            <div class="color-swatch" id="theme-success" data-color-labels="[&quot;theme-success&quot;, &quot;success&quot;, &quot;success-rgb&quot;]">
+              <label class="ratio ratio-4x3 border rounded-1 cursor-pointer mb-1" for="success" style="background-color: #3fca90;" role="button"></label>
+              <input class="form-control form-control-sm" type="text" value="#3fca90">
+              <input class="visually-hidden" type="color" id="success" value="#3fca90">
+            </div>
+          </div>
+          <div class="col">
+            <div class="text-dark fs-sm fw-medium pt-1 mb-2">Danger</div>
+            <div class="color-swatch" id="theme-danger" data-color-labels="[&quot;theme-danger&quot;, &quot;danger&quot;, &quot;danger-rgb&quot;]">
+              <label class="ratio ratio-4x3 border rounded-1 cursor-pointer mb-1" for="danger" style="background-color: #ed5050;" role="button"></label>
+              <input class="form-control form-control-sm" type="text" value="#ed5050">
+              <input class="visually-hidden" type="color" id="danger" value="#ed5050">
+            </div>
+          </div>
+        </div>
+        <div class="d-flex align-items-center mb-3"><i class="ai-align-left text-body-secondary fs-4 me-2"></i>
+          <h5 class="mb-0">Typography <span class="text-body-secondary fs-sm fw-normal">(1rem = 16px)</span></h5>
+        </div>
+        <div class="mb-5">
+          <div class="mb-3">
+            <label class="text-dark fs-sm fw-medium pt-1 mb-2" for="font-url">Google font URL</label>
+            <input class="form-control" type="url" value="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" id="font-url">
+          </div>
+          <div class="mb-3">
+            <label class="text-dark fs-sm fw-medium pt-1 mb-2" for="body-font-family">Font family</label>
+            <input class="form-control" type="text" value="'Inter', sans-serif" id="body-font-family">
+          </div>
+          <div class="row row-cols-2">
+            <div class="col mb-3">
+              <label class="d-flex w-100 text-dark fs-sm fw-medium pt-1 mb-2" for="root-font-size">Root font size, rem</label>
+              <select class="form-select" id="root-font-size">
+                <option value=".75rem">.75</option>
+                <option value=".875rem">.875</option>
+                <option value="1rem" selected>1</option>
+                <option value="1.05rem">1.05</option>
+                <option value="1.1rem">1.1</option>
+                <option value="1.15rem">1.15</option>
+                <option value="1.25rem">1.25</option>
+                <option value="1.375rem">1.375</option>
+              </select>
+            </div>
+            <div class="col mb-3">
+              <label class="d-flex w-100 text-dark fs-sm fw-medium pt-1 mb-2" for="body-font-size">Body font size, rem</label>
+              <select class="form-select" id="body-font-size">
+                <option value=".75rem">.75</option>
+                <option value=".875rem">.875</option>
+                <option value="1rem" selected>1</option>
+                <option value="1.15rem">1.15</option>
+                <option value="1.25rem">1.25</option>
+                <option value="1.375rem">1.375</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="d-flex align-items-center mt-n2 mb-3"><i class="ai-maximize text-body-secondary fs-5 me-2"></i>
+          <h5 class="mb-0">Borders / Rounding</h5>
+        </div>
+        <div class="mb-3">
+          <label class="d-flex w-100 text-dark fs-sm fw-medium pt-1 mb-2" for="border-width">Border width, px</label>
+          <input class="form-control" type="number" min="0" step="1" value="1" id="border-width">
+        </div>
+        <div class="mb-3">
+          <label class="d-flex w-100 text-dark fs-sm fw-medium pt-1 mb-2" for="border-radius">Rounded base, rem</label>
+          <input class="form-control" type="number" min="0" step=".05" value="1" id="border-radius">
+        </div>
+        <div id="theme-border-radiuses">
+          <div class="mb-3">
+            <label class="d-flex w-100 text-dark fs-sm fw-medium pt-1 mb-2" for="border-radius-sm">
+              Rounded SM<span class="text-body-secondary fw-normal ms-1"> = Rounded base multiplied by</span></label>
+            <input class="form-control" type="number" min="0" step=".05" value=".75" id="border-radius-sm">
+          </div>
+          <div class="mb-3">
+            <label class="d-flex w-100 text-dark fs-sm fw-medium pt-1 mb-2" for="border-radius-lg">
+              Rounded LG<span class="text-body-secondary fw-normal ms-1"> = Rounded base multiplied by</span></label>
+            <input class="form-control" type="number" min="0" step=".05" value="1.125" id="border-radius-lg">
+          </div>
+          <div class="mb-3">
+            <label class="d-flex w-100 text-dark fs-sm fw-medium pt-1 mb-2" for="border-radius-xl">
+              Rounded XL<span class="text-body-secondary fw-normal ms-1"> = Rounded base multiplied by</span></label>
+            <input class="form-control" type="number" min="0" step=".05" value="1.5" id="border-radius-xl">
+          </div>
+          <div class="mb-3">
+            <label class="d-flex w-100 text-dark fs-sm fw-medium pt-1 mb-2" for="border-radius-xxl">
+              Rounded 2XL<span class="text-body-secondary fw-normal ms-1"> = Rounded base multiplied by</span></label>
+            <input class="form-control" type="number" min="0" step=".05" value="2.25" id="border-radius-xxl">
+          </div>
+        </div>
+      </div>
+      <div class="offcanvas-header border-top d-none" id="customizer-btns">
+        <button class="btn btn-secondary w-100 me-3" type="button" id="customizer-reset-btn">
+          <i class="ai-undo fs-lg me-2 ms-n1"></i>
+          Reset
+        </button>
+        {% comment %} <button class="btn btn-primary w-100" type="button" data-bs-toggle="modal" data-bs-target="#customizer-modal">
+          <i class="ai-code-curly fs-lg me-2 ms-n1"></i>
+          Show styles
+        </button> {% endcomment %}
+      </div>
+    </div>
+
+
+    <!-- Page wrapper -->
+    <main class="page-wrapper">
+      <div class="d-lg-flex position-relative h-100">
+
+        <!-- Logo visible on screens < 992px -->
+        <div class="d-flex d-lg-none justify-content-center pt-4 px-3 mx-auto" style="max-width: 420px;">
+          <a class="navbar-brand text-dark p-0 m-0" href="{% url 'landing:coming_soon'%}">
+            <span class="text-primary flex-shrink-0 me-2">
+           
+
+              <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="35" height="32" viewBox="0 0 512 512">
+                <path   d="M0 0 C0.9355925 -0.00974854 1.871185 -0.01949707 2.83512878 -0.02954102 C23.24416486 -0.1984297 42.96079539 -0.03089418 63.0078125 4.23828125 C63.93158691 4.42551758 64.85536133 4.61275391 65.80712891 4.80566406 C101.4803425 12.13655694 136.04867954 27.05718327 165.0078125 49.23828125 C165.5857959 49.67495117 166.1637793 50.11162109 166.75927734 50.56152344 C175.26586251 57.002323 183.31244993 63.84319145 191.0078125 71.23828125 C191.60239258 71.80562988 192.19697266 72.37297852 192.80957031 72.95751953 C201.15799553 80.96365501 208.80764092 89.18319073 215.69726562 98.47900391 C217.02578341 100.26240538 218.38141287 102.02237641 219.7421875 103.78125 C227.10148221 113.40694237 233.21551204 123.60687263 239.0078125 134.23828125 C239.3697168 134.89876465 239.73162109 135.55924805 240.10449219 136.23974609 C257.60985188 168.57859478 268.92626162 206.31643928 269.24609375 243.23046875 C269.25584229 244.16606125 269.26559082 245.10165375 269.27563477 246.06559753 C269.44452345 266.47463361 269.27698793 286.19126414 265.0078125 306.23828125 C264.82057617 307.16205566 264.63333984 308.08583008 264.44042969 309.03759766 C257.10953681 344.71081125 242.18891048 379.27914829 220.0078125 408.23828125 C219.57114258 408.81626465 219.13447266 409.39424805 218.68457031 409.98974609 C212.24377075 418.49633126 205.4029023 426.54291868 198.0078125 434.23828125 C197.44046387 434.83286133 196.87311523 435.42744141 196.28857422 436.04003906 C188.28243874 444.38846428 180.06290302 452.03810967 170.76708984 458.92773438 C168.98368837 460.25625216 167.22371734 461.61188162 165.46484375 462.97265625 C155.83915138 470.33195096 145.63922112 476.44598079 135.0078125 482.23828125 C134.3473291 482.60018555 133.6868457 482.96208984 133.00634766 483.33496094 C100.66749897 500.84032063 62.92965447 512.15673037 26.015625 512.4765625 C25.0800325 512.48631104 24.14444 512.49605957 23.18049622 512.50610352 C2.77146014 512.6749922 -16.94517039 512.50745668 -36.9921875 508.23828125 C-37.91596191 508.05104492 -38.83973633 507.86380859 -39.79150391 507.67089844 C-75.4647175 500.34000556 -110.03305454 485.41937923 -138.9921875 463.23828125 C-139.5701709 462.80161133 -140.1481543 462.36494141 -140.74365234 461.91503906 C-149.25023751 455.4742395 -157.29682493 448.63337105 -164.9921875 441.23828125 C-165.58676758 440.67093262 -166.18134766 440.10358398 -166.79394531 439.51904297 C-175.14237053 431.51290749 -182.79201592 423.29337177 -189.68164062 413.99755859 C-191.01015841 412.21415712 -192.36578787 410.45418609 -193.7265625 408.6953125 C-201.08585721 399.06962013 -207.19988704 388.86968987 -212.9921875 378.23828125 C-213.3540918 377.57779785 -213.71599609 376.91731445 -214.08886719 376.23681641 C-231.59422688 343.89796772 -242.91063662 306.16012322 -243.23046875 269.24609375 C-243.24021729 268.31050125 -243.24996582 267.37490875 -243.26000977 266.41096497 C-243.42889845 246.00192889 -243.26136293 226.28529836 -238.9921875 206.23828125 C-238.80495117 205.31450684 -238.61771484 204.39073242 -238.42480469 203.43896484 C-231.09391181 167.76575125 -216.17328548 133.19741421 -193.9921875 104.23828125 C-193.55551758 103.66029785 -193.11884766 103.08231445 -192.66894531 102.48681641 C-186.22814575 93.98023124 -179.3872773 85.93364382 -171.9921875 78.23828125 C-171.42483887 77.64370117 -170.85749023 77.04912109 -170.27294922 76.43652344 C-162.26681374 68.08809822 -154.04727802 60.43845283 -144.75146484 53.54882812 C-142.96806337 52.22031034 -141.20809234 50.86468088 -139.44921875 49.50390625 C-129.82352638 42.14461154 -119.62359612 36.03058171 -108.9921875 30.23828125 C-108.3317041 29.87637695 -107.6712207 29.51447266 -106.99072266 29.14160156 C-74.65187397 11.63624187 -36.91402947 0.31983213 0 0 Z " fill="#0F0F19" transform="translate(242.9921875,-0.23828125)"/>
+                <path fill="currentColor" d="M0 0 C0 14.52 0 29.04 0 44 C-9.9 46.97 -9.9 46.97 -20 50 C-33.91988943 55.93483658 -45.60015672 63.06994784 -57 73 C-57.61359375 73.52851563 -58.2271875 74.05703125 -58.859375 74.6015625 C-75.17982966 89.7562704 -86.86768034 113.43268613 -88.22290039 135.6550293 C-88.34260346 139.11330534 -88.37139035 142.56937706 -88.37060547 146.02954102 C-88.37495826 148.16700256 -88.41133309 150.30235744 -88.44921875 152.43945312 C-88.55402609 165.13321317 -86.02667659 176.67699412 -80.625 188.25 C-80.32029785 188.91636475 -80.0155957 189.58272949 -79.70166016 190.26928711 C-78.81492316 192.18638752 -77.90831507 194.09306037 -77 196 C-76.56171875 196.96550781 -76.1234375 197.93101562 -75.671875 198.92578125 C-63.77856541 223.10645587 -39.73143203 239.3283527 -15 248 C-4.58943108 251.3009121 5.99291325 251.29126001 16.8125 251.375 C17.48035522 251.38321777 18.14821045 251.39143555 18.83630371 251.39990234 C27.38836461 251.47766268 34.90389456 250.79287709 43 248 C44.12257202 247.62367432 44.12257202 247.62367432 45.26782227 247.23974609 C47.31844899 246.52777188 49.34710086 245.77406886 51.375 245 C52.04660156 244.7525 52.71820313 244.505 53.41015625 244.25 C56.35954875 243.13745902 59.04204047 241.97398068 61.7265625 240.3125 C64 239 64 239 68 239 C68 238.34 68 237.68 68 237 C69.56254605 235.93613886 71.17859568 234.95063524 72.8125 234 C81.65996174 228.52028176 89.42355666 221.84539288 95 213 C98.30446865 213.64146672 100.65866102 214.86199097 103.4921875 216.66015625 C104.78829956 217.47480347 104.78829956 217.47480347 106.1105957 218.3059082 C107.47897583 219.17542114 107.47897583 219.17542114 108.875 220.0625 C117.14171426 225.2542909 125.46928898 230.25434395 134 235 C134 243.03765879 123.28331482 251.64767236 118 257 C114.47064734 260.19499293 110.78421223 263.11390747 107 266 C106.03320312 266.77859375 105.06640625 267.5571875 104.0703125 268.359375 C82.18236686 285.45033819 52.22768835 297.04458374 24.3984375 297.203125 C23.5995108 297.20882507 22.80058411 297.21452515 21.97744751 297.22039795 C20.2950368 297.22978601 18.61260822 297.23635706 16.93017578 297.24023438 C14.40232873 297.24989555 11.87531175 297.28095975 9.34765625 297.3125 C-0.55305645 297.37752073 -9.39461004 296.59962389 -19 294 C-19.82371094 293.79052734 -20.64742188 293.58105469 -21.49609375 293.36523438 C-23.57299699 292.82207262 -25.6303681 292.23841879 -27.6875 291.625 C-28.40099609 291.41367432 -29.11449219 291.20234863 -29.84960938 290.98461914 C-35.82879313 289.15832148 -41.38358128 286.73926805 -47 284 C-48.39512238 283.435739 -49.79094924 282.87321644 -51.1875 282.3125 C-62.88354226 277.10492642 -73.38809318 269.35185853 -83 261 C-83.65355469 260.46761719 -84.30710938 259.93523437 -84.98046875 259.38671875 C-89.51532981 255.67273761 -93.28384074 251.52433371 -97 247 C-97.4129834 246.49936035 -97.8259668 245.9987207 -98.25146484 245.48291016 C-112.33389237 228.3128101 -122.27352561 209.50928166 -129.5 188.5 C-129.84635498 187.51640503 -129.84635498 187.51640503 -130.19970703 186.51293945 C-134.03624475 174.70809614 -134.32717819 162.40296443 -134.26074219 150.11230469 C-134.24994851 147.73867642 -134.26074442 145.36579411 -134.2734375 142.9921875 C-134.28058857 135.10933948 -133.91760849 127.68148648 -132 120 C-131.80019531 118.80375 -131.60039062 117.6075 -131.39453125 116.375 C-129.71736264 106.64967328 -126.59032631 97.95418164 -122.78417969 88.88085938 C-122.16849485 87.40413584 -121.58245757 85.91504722 -121.0078125 84.421875 C-116.29775212 72.66915292 -108.28711054 61.46248169 -100 52 C-99.56993652 51.50435547 -99.13987305 51.00871094 -98.69677734 50.49804688 C-74.3705893 22.64350391 -37.86897307 0 0 0 Z " fill="#FCFCFC" transform="translate(241,108)"/>
+                <path d="M0 0 C19.77327488 1.16313382 19.77327488 1.16313382 27 3.8125 C27.85537354 4.11309326 28.71074707 4.41368652 29.59204102 4.72338867 C46.43224956 10.87604843 63.12064728 18.51893304 77 30 C77.6098877 30.49612793 78.21977539 30.99225586 78.84814453 31.50341797 C91.59173571 41.94050588 102.20768309 52.96575209 111 67 C111.64066406 67.96292969 112.28132813 68.92585938 112.94140625 69.91796875 C115.95096116 74.47314058 118.55284742 78.7508547 120.265625 83.94140625 C121.13228395 86.37081725 122.24528785 88.61880069 123.375 90.9375 C125.53559626 95.63614607 127.16271122 100.36343006 128.625 105.3125 C128.91576416 106.2878772 128.91576416 106.2878772 129.21240234 107.28295898 C129.84964422 109.51276597 130.42932399 111.75220842 131 114 C131.39819946 115.48947144 131.39819946 115.48947144 131.80444336 117.0090332 C134.03654282 126.14299305 134.43421016 134.78604319 134.33618164 144.15014648 C134.31249188 146.56332759 134.31566063 148.9754028 134.32226562 151.38867188 C134.2858638 171.85762481 129.46016462 190.07604908 122 209 C117.80619817 207.48141885 114.09969022 205.38482408 110.3125 203.0625 C108.9936291 202.25628214 107.67461176 201.4503038 106.35546875 200.64453125 C105.65728027 200.21736816 104.9590918 199.79020508 104.23974609 199.35009766 C101.85999167 197.91560431 99.45820255 196.52422883 97.05078125 195.13671875 C95.40879688 194.17457692 93.76686882 193.21233899 92.125 192.25 C91.33391846 191.80277588 90.54283691 191.35555176 89.7277832 190.89477539 C84.27795947 187.66251987 84.27795947 187.66251987 82.91015625 184.40234375 C83.0248218 181.33628659 84.12657268 178.82507946 85.1640625 175.96484375 C92.95356966 148.33757301 87.61398426 118.42101297 74.04394531 93.77441406 C71.49716056 89.4455947 68.3356877 85.73112295 65 82 C64.33613281 81.19433594 63.67226563 80.38867188 62.98828125 79.55859375 C50.80744055 65.17124216 36.11093882 57.34543943 19 50 C18.31131836 49.7009375 17.62263672 49.401875 16.91308594 49.09375 C11.20373709 46.77169658 6.37866404 46.1597571 0 45 C0 30.15 0 15.3 0 0 Z " fill="#FBFBFB" transform="translate(271,108)"/>
+              </svg>
+
+            </span>
+            Xopricer
+          </a>
+        </div>
+
+        <!-- Parallax gfx -->
+        <div class="w-sm-75 w-lg-100 p-4 overflow-hidden mx-auto mx-lg-0 order-lg-2" style="max-width: 1047px;">
+          <div class="p-sm-3 h-100">
+            <div class="position-relative h-100">
+              <div class="position-absolute top-0 end-0 h-100 bg-primary rounded-5 d-none d-lg-block" style="width: 93.9%;"></div>
+              <div class="position-absolute top-0 end-0 h-100 bg-primary rounded-4 d-lg-none" style="width: 93.9%;"></div>
+              <div class="parallax h-100 z-2 overflow-hidden">
+                <div class="parallax-layer d-flex align-items-end mb-n2 mb-lg-0" style="margin-top: 4.4%;" data-depth="0.1">
+                    <img src="{% static 'assets/img/coming/girl.png' %}" alt="Girl">
+                </div>
+              </div>
+              <div class="parallax position-absolute top-0 start-0 w-100 h-100 z-2">
+                <div class="parallax-layer d-flex align-items-end" style="padding-right: 75.6%; padding-bottom: 70%;" data-depth="-0.1">
+                  <svg class="text-warning" xmlns="http://www.w3.org/2000/svg" width="239" height="233" viewBox="0 0 239 233" fill="none" xmlns:v="https://vecta.io/nano"><style><![CDATA[.B{stroke-miterlimit:10}.C{fill:currentColor}.D{stroke:#fff}.E{stroke-width:1.709}]]></style><g class="C"><g stroke="currentColor" stroke-width="1.923" class="B"><path d="M87.071 128.678s-2.681 19.31 1.872 35.431c5.767 20.454 27.526 48.523 31.467 47.495s-2.161-14.445-2.196-25.458c-.069-18.236 8.251-24.568 8.251-24.568l-39.394-32.9zM234.248 231.78c-11.856-4.287-14.572-17.53-16.71-27.584-1.236-5.778-2.357-11.729-6.055-17.022a26.14 26.14 0 0 0-6.714-6.622c-.844-.566-6.668-4.16-7.754-3.027 2.623-2.727 11.232 2.947 14.237 5.119 3.258 2.346 8.955 7.5 10.157 11.417.867-3.859-2.438-11.29-4.148-15.115-2.647-5.905-6.691-13.74-10.944-18.975-7.419-9.152-17.808-14.826-28.185-15.612-2.947-.22-6.148.358-8.967.867-25.539 4.599-35.269 38.493-11.741 60.126 6.286 5.778 13.832 9.302 21.632 10.446 7.385 1.075 17.831.451 22.049 9.418 1.341-5.177-5.986-15.785-11.255-19.541-2.381-1.699-5.131-3.316-7.812-4.079-2.704-.763-4.703-1.098-6.922-1.468 2.577-.658 1.283-.485 4.322-.693 2.323-.15 6.148.936 9.106 1.895 5.142 1.676 14.087 8.817 17.484 13.151 7.5 9.614 16.098 19.09 28.22 17.299z"/><path d="M137.176 173.155l34.129-35.448 5.994 5.771-34.129 35.448-5.994-5.771zM125.055 88.59s19.403-1.953 35.339 3.201c20.223 6.529 47.449 29.341 46.282 33.235-1.168 3.906-14.353-2.704-25.366-3.155-18.212-.751-24.857 7.327-24.857 7.327L125.055 88.59z"/><path d="M110.021 52.257c43.855 42.226 60.069 77.495 63.616 83.828l-38.25 39.729c-6.472-3.305-42.33-18.166-86.185-60.391C29.88 96.817 17.053 73.705 9.495 52.881L48.716 9.521c21.09 6.772 41.984 24.132 61.305 42.737z"/><path d="M9.334 7.859c9.823.381 22.708 2.6 36.69 7.095l-3.536 6.067c-6.448 11.048-15.381 20.432-26.105 27.4l-6.887 4.472C4.48 39.084 1.776 26.291 1.025 16.492.655 11.708 4.538 7.675 9.334 7.86zM123.31 126.077l.023-.023c2.577-2.681 8.159-.751 13.336 4.23s35.373 35.2 31.64 39.071l-.011.011-.012.012c-3.721 3.871-35.061-25.158-40.238-30.138s-7.315-10.482-4.738-13.163zM53.269 58.475c7.234-7.512 19.194-7.743 26.706-.509s7.743 19.195.508 26.706-19.195 7.742-26.706.508-7.742-19.195-.508-26.706z"/></g><path d="M11.795 1.007c9.823.381 22.708 2.6 36.69 7.095l-3.536 6.067c-6.448 11.048-15.381 20.431-26.105 27.4l-6.887 4.472c-5.016-13.81-7.72-26.602-8.471-36.402a8.01 8.01 0 0 1 8.309-8.632zm113.977 118.218l.023-.023c2.577-2.681 8.158-.751 13.335 4.229 3.467 3.34 18.143 17.982 26.348 28.463 4.045 5.165 6.518 9.326 5.293 10.608l-.012.012-.011.011c-1.248 1.295-5.617-1.109-11.06-5.073-10.77-7.835-25.746-21.76-29.178-25.065-5.189-4.98-7.327-10.481-4.738-13.162z" class="D E B"/><use xlink:href="#B"/></g><use xlink:href="#B" class="B D E"/><use xlink:href="#C" class="C"/><use xlink:href="#C" stroke-linecap="round" stroke-linejoin="round" class="B D E"/><path d="M165.466 151.443l14.284-14.838-5.998-5.767" class="C"/><path d="M165.466 151.443l14.284-14.838-5.998-5.767" class="B D E"/><path d="M139.627 166.293l5.986 5.766 14.064-14.607" class="C"/><path d="M139.627 166.293l5.986 5.766 14.064-14.607" class="B D E"/><use xlink:href="#D" class="C"/><use xlink:href="#D" class="B D E"/><use xlink:href="#E" class="C"/><use xlink:href="#E" class="B D E"/><use xlink:href="#F" class="C"/><g class="B D E"><use xlink:href="#F"/><path d="M55.73 51.622c7.234-7.511 19.194-7.742 26.706-.508s7.742 19.195.508 26.706-19.194 7.743-26.706.508-7.743-19.195-.508-26.706z" class="C"/></g><defs ><path id="B" d="M88.839 139.945c.243 5.512.948 11.614 2.554 17.311 5.766 20.454 27.526 48.523 31.467 47.495s-2.161-14.445-2.196-25.458c-.023-7.627 1.41-13.162 3.097-17.033"/><path id="C" d="M146.526 171.123c.393 9.984 3.872 18.675 13.359 27.399 6.287 5.778 13.833 9.303 21.633 10.447 7.384 1.075 17.831.451 22.049 9.418 1.34-5.177-5.986-15.785-11.256-19.541-2.38-1.699-5.13-3.317-7.811-4.079-2.705-.763-4.704-1.098-6.923-1.468 2.577-.659 1.283-.485 4.322-.693 2.323-.151 6.148.936 9.107 1.895 5.142 1.676 14.086 8.817 17.484 13.151 7.511 9.591 16.109 19.067 28.231 17.276-11.856-4.287-14.572-17.531-16.71-27.584-1.236-5.778-2.357-11.73-6.055-17.022-1.814-2.589-4.091-4.842-6.714-6.622-.844-.566-6.564-3.213-7.754-3.028 2.993-.462 11.232 2.947 14.237 5.12 3.259 2.346 8.956 7.5 10.157 11.417.867-3.86-2.438-11.29-4.148-15.115-2.646-5.905-6.691-13.74-10.944-18.975-7.742-9.546-18.778-15.069-29.572-15.474"/><path id="D" d="M145.509 81.726c5.524.439 11.649 1.375 17.334 3.213 20.223 6.529 47.449 29.341 46.282 33.235-1.167 3.906-14.352-2.704-25.365-3.155-6.067-.254-10.851.474-14.538 1.561"/><path id="E" d="M153.448 152.761l-15.6 16.201c-2.023-1.028-6.888-3.189-13.972-6.945-8.724-4.634-20.8-11.695-35.026-22.084-11.256-8.228-23.852-18.535-37.187-31.374-19.322-18.605-32.149-41.717-39.706-62.541"/><path id="F" d="M48.486 8.09c21.09 6.772 44.664 18.698 63.998 37.314 43.855 42.226 60.068 77.494 63.616 83.827l-15.613 16.225"/></defs></svg>
+                </div>
+                <div class="parallax-layer d-flex align-items-end" style="padding: 0 59.35% 70.4% 30.4%;" data-depth="0.2">
+                  <svg class="text-white" width="100" height="90" viewBox="0 0 100 90" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M25.8715 89.2559L28.5411 88.5681L25.5817 77.117L38.7756 75.0037L35.4411 62.0913L48.6485 59.9721L45.3139 47.0597L58.5079 44.9464L55.1673 32.0206L68.3747 29.9013L65.0402 16.989L78.2551 14.8502L74.553 0.457076L71.8699 1.15091L74.8352 12.6155L61.6008 14.7467L64.9549 27.6666L51.7339 29.7918L55.082 42.6982L41.8746 44.8175L45.2091 57.7299L32.0017 59.8491L35.3497 72.7555L22.1423 74.8748L25.8715 89.2559Z"/>
+                  </svg>                  
+                </div>
+                <div class="parallax-layer d-flex align-items-end" style="padding: 0 11.58% 89.64% 81.28%;" data-depth="-0.15">
+                  <svg class="text-warning" width="69" height="55" viewBox="0 0 69 55" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M56.2836 55L68.9438 53.6761L68.704 51.3308L58.6187 52.3774L58.5303 40.9663L47.1702 42.1515L47.0692 30.7279L35.709 31.9131L35.6207 20.4895L24.2479 21.6747L24.1469 10.251L12.7741 11.4363L12.6731 0L0.000184965 1.29872L0.240014 3.64399L10.338 2.61004L10.4389 14.0463L21.8117 12.8611L21.9001 24.2847L33.2729 23.1121L33.3612 34.5232L44.734 33.3379L44.8224 44.7616L56.1952 43.5764L56.2836 55Z"/>
+                  </svg>
+                </div>
+                <div class="parallax-layer d-flex align-items-end" style="padding: 0 70.94% 54.29% 24.4%;" data-depth="-0.35">
+                  <svg class="text-warning" width="45" height="45" viewBox="0 0 45 45" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M22.5089 45C34.9147 45 45 34.9187 45 22.5C45 10.0991 34.9147 0 22.5089 0C10.1031 0 -1.8272e-06 10.0813 -1.8272e-06 22.5C-1.8272e-06 34.9187 10.1031 45 22.5089 45ZM22.5089 3.35449C33.0762 3.35449 41.662 11.9548 41.662 22.5178C41.662 33.0809 33.0583 41.6812 22.5089 41.6812C11.9417 41.6812 3.33795 33.0809 3.33795 22.5178C3.33795 11.9548 11.9417 3.35449 22.5089 3.35449Z"/>
+                  </svg>
+                </div>
+                <div class="parallax-layer d-flex align-items-end" style="padding: 0 69.6% 92.57% 26.37%;" data-depth="-0.25">
+                  <svg class="text-white" width="39" height="38" viewBox="0 0 39 38" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M27.6989 38L39 11.0113L11.3011 0L7.10921e-07 26.9886L27.6989 38ZM35.6207 12.4013L26.2724 34.7074L3.37926 25.5987L12.7276 3.2926L35.6207 12.4013Z"/>
+                  </svg>
+                </div>
+                <div class="parallax-layer d-flex align-items-end" style="padding: 0 17.48% 74.58% 79.94%;" data-depth="0.2">
+                  <div class="ratio ratio-1x1 border border-white border-2 rounded-circle"></div>
+                </div>
+                <div class="parallax-layer d-flex align-items-end" style="padding: 0 87.38% 66.96% 11.27%;" data-depth="0.15">
+                  <div class="ratio ratio-1x1 bg-white rounded-circle"></div>
+                </div>
+                <div class="parallax-layer d-flex align-items-end" style="padding: 0 46.23% 91.84% 52.43%;" data-depth="0.35">
+                  <div class="ratio ratio-1x1 bg-warning rounded-circle"></div>
+                </div>
+                <div class="parallax-layer d-flex align-items-end" style="padding: 0 3.6% 56.17% 94.93%;" data-depth="0.4">
+                  <div class="ratio ratio-1x1 bg-warning rounded-circle"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <!-- Page content -->
+        <div class="d-flex flex-column align-items-center w-lg-50 px-3 px-sm-4 px-xl-5 pt-lg-5 order-lg-1">
+
+          <!-- Logo visible on screens > 991px -->
+          <div class="w-100 d-none d-lg-block" style="max-width: 420px;">
+            <a class="navbar-brand text-dark p-0 m-0" href="{% url 'landing:coming_soon'%}">
+              <span class="text-primary flex-shrink-0 me-2">
+                
+
+                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="35" height="32" viewBox="0 0 512 512">
+                  <path   d="M0 0 C0.9355925 -0.00974854 1.871185 -0.01949707 2.83512878 -0.02954102 C23.24416486 -0.1984297 42.96079539 -0.03089418 63.0078125 4.23828125 C63.93158691 4.42551758 64.85536133 4.61275391 65.80712891 4.80566406 C101.4803425 12.13655694 136.04867954 27.05718327 165.0078125 49.23828125 C165.5857959 49.67495117 166.1637793 50.11162109 166.75927734 50.56152344 C175.26586251 57.002323 183.31244993 63.84319145 191.0078125 71.23828125 C191.60239258 71.80562988 192.19697266 72.37297852 192.80957031 72.95751953 C201.15799553 80.96365501 208.80764092 89.18319073 215.69726562 98.47900391 C217.02578341 100.26240538 218.38141287 102.02237641 219.7421875 103.78125 C227.10148221 113.40694237 233.21551204 123.60687263 239.0078125 134.23828125 C239.3697168 134.89876465 239.73162109 135.55924805 240.10449219 136.23974609 C257.60985188 168.57859478 268.92626162 206.31643928 269.24609375 243.23046875 C269.25584229 244.16606125 269.26559082 245.10165375 269.27563477 246.06559753 C269.44452345 266.47463361 269.27698793 286.19126414 265.0078125 306.23828125 C264.82057617 307.16205566 264.63333984 308.08583008 264.44042969 309.03759766 C257.10953681 344.71081125 242.18891048 379.27914829 220.0078125 408.23828125 C219.57114258 408.81626465 219.13447266 409.39424805 218.68457031 409.98974609 C212.24377075 418.49633126 205.4029023 426.54291868 198.0078125 434.23828125 C197.44046387 434.83286133 196.87311523 435.42744141 196.28857422 436.04003906 C188.28243874 444.38846428 180.06290302 452.03810967 170.76708984 458.92773438 C168.98368837 460.25625216 167.22371734 461.61188162 165.46484375 462.97265625 C155.83915138 470.33195096 145.63922112 476.44598079 135.0078125 482.23828125 C134.3473291 482.60018555 133.6868457 482.96208984 133.00634766 483.33496094 C100.66749897 500.84032063 62.92965447 512.15673037 26.015625 512.4765625 C25.0800325 512.48631104 24.14444 512.49605957 23.18049622 512.50610352 C2.77146014 512.6749922 -16.94517039 512.50745668 -36.9921875 508.23828125 C-37.91596191 508.05104492 -38.83973633 507.86380859 -39.79150391 507.67089844 C-75.4647175 500.34000556 -110.03305454 485.41937923 -138.9921875 463.23828125 C-139.5701709 462.80161133 -140.1481543 462.36494141 -140.74365234 461.91503906 C-149.25023751 455.4742395 -157.29682493 448.63337105 -164.9921875 441.23828125 C-165.58676758 440.67093262 -166.18134766 440.10358398 -166.79394531 439.51904297 C-175.14237053 431.51290749 -182.79201592 423.29337177 -189.68164062 413.99755859 C-191.01015841 412.21415712 -192.36578787 410.45418609 -193.7265625 408.6953125 C-201.08585721 399.06962013 -207.19988704 388.86968987 -212.9921875 378.23828125 C-213.3540918 377.57779785 -213.71599609 376.91731445 -214.08886719 376.23681641 C-231.59422688 343.89796772 -242.91063662 306.16012322 -243.23046875 269.24609375 C-243.24021729 268.31050125 -243.24996582 267.37490875 -243.26000977 266.41096497 C-243.42889845 246.00192889 -243.26136293 226.28529836 -238.9921875 206.23828125 C-238.80495117 205.31450684 -238.61771484 204.39073242 -238.42480469 203.43896484 C-231.09391181 167.76575125 -216.17328548 133.19741421 -193.9921875 104.23828125 C-193.55551758 103.66029785 -193.11884766 103.08231445 -192.66894531 102.48681641 C-186.22814575 93.98023124 -179.3872773 85.93364382 -171.9921875 78.23828125 C-171.42483887 77.64370117 -170.85749023 77.04912109 -170.27294922 76.43652344 C-162.26681374 68.08809822 -154.04727802 60.43845283 -144.75146484 53.54882812 C-142.96806337 52.22031034 -141.20809234 50.86468088 -139.44921875 49.50390625 C-129.82352638 42.14461154 -119.62359612 36.03058171 -108.9921875 30.23828125 C-108.3317041 29.87637695 -107.6712207 29.51447266 -106.99072266 29.14160156 C-74.65187397 11.63624187 -36.91402947 0.31983213 0 0 Z " fill="#0F0F19" transform="translate(242.9921875,-0.23828125)"/>
+                  <path fill="currentColor" d="M0 0 C0 14.52 0 29.04 0 44 C-9.9 46.97 -9.9 46.97 -20 50 C-33.91988943 55.93483658 -45.60015672 63.06994784 -57 73 C-57.61359375 73.52851563 -58.2271875 74.05703125 -58.859375 74.6015625 C-75.17982966 89.7562704 -86.86768034 113.43268613 -88.22290039 135.6550293 C-88.34260346 139.11330534 -88.37139035 142.56937706 -88.37060547 146.02954102 C-88.37495826 148.16700256 -88.41133309 150.30235744 -88.44921875 152.43945312 C-88.55402609 165.13321317 -86.02667659 176.67699412 -80.625 188.25 C-80.32029785 188.91636475 -80.0155957 189.58272949 -79.70166016 190.26928711 C-78.81492316 192.18638752 -77.90831507 194.09306037 -77 196 C-76.56171875 196.96550781 -76.1234375 197.93101562 -75.671875 198.92578125 C-63.77856541 223.10645587 -39.73143203 239.3283527 -15 248 C-4.58943108 251.3009121 5.99291325 251.29126001 16.8125 251.375 C17.48035522 251.38321777 18.14821045 251.39143555 18.83630371 251.39990234 C27.38836461 251.47766268 34.90389456 250.79287709 43 248 C44.12257202 247.62367432 44.12257202 247.62367432 45.26782227 247.23974609 C47.31844899 246.52777188 49.34710086 245.77406886 51.375 245 C52.04660156 244.7525 52.71820313 244.505 53.41015625 244.25 C56.35954875 243.13745902 59.04204047 241.97398068 61.7265625 240.3125 C64 239 64 239 68 239 C68 238.34 68 237.68 68 237 C69.56254605 235.93613886 71.17859568 234.95063524 72.8125 234 C81.65996174 228.52028176 89.42355666 221.84539288 95 213 C98.30446865 213.64146672 100.65866102 214.86199097 103.4921875 216.66015625 C104.78829956 217.47480347 104.78829956 217.47480347 106.1105957 218.3059082 C107.47897583 219.17542114 107.47897583 219.17542114 108.875 220.0625 C117.14171426 225.2542909 125.46928898 230.25434395 134 235 C134 243.03765879 123.28331482 251.64767236 118 257 C114.47064734 260.19499293 110.78421223 263.11390747 107 266 C106.03320312 266.77859375 105.06640625 267.5571875 104.0703125 268.359375 C82.18236686 285.45033819 52.22768835 297.04458374 24.3984375 297.203125 C23.5995108 297.20882507 22.80058411 297.21452515 21.97744751 297.22039795 C20.2950368 297.22978601 18.61260822 297.23635706 16.93017578 297.24023438 C14.40232873 297.24989555 11.87531175 297.28095975 9.34765625 297.3125 C-0.55305645 297.37752073 -9.39461004 296.59962389 -19 294 C-19.82371094 293.79052734 -20.64742188 293.58105469 -21.49609375 293.36523438 C-23.57299699 292.82207262 -25.6303681 292.23841879 -27.6875 291.625 C-28.40099609 291.41367432 -29.11449219 291.20234863 -29.84960938 290.98461914 C-35.82879313 289.15832148 -41.38358128 286.73926805 -47 284 C-48.39512238 283.435739 -49.79094924 282.87321644 -51.1875 282.3125 C-62.88354226 277.10492642 -73.38809318 269.35185853 -83 261 C-83.65355469 260.46761719 -84.30710938 259.93523437 -84.98046875 259.38671875 C-89.51532981 255.67273761 -93.28384074 251.52433371 -97 247 C-97.4129834 246.49936035 -97.8259668 245.9987207 -98.25146484 245.48291016 C-112.33389237 228.3128101 -122.27352561 209.50928166 -129.5 188.5 C-129.84635498 187.51640503 -129.84635498 187.51640503 -130.19970703 186.51293945 C-134.03624475 174.70809614 -134.32717819 162.40296443 -134.26074219 150.11230469 C-134.24994851 147.73867642 -134.26074442 145.36579411 -134.2734375 142.9921875 C-134.28058857 135.10933948 -133.91760849 127.68148648 -132 120 C-131.80019531 118.80375 -131.60039062 117.6075 -131.39453125 116.375 C-129.71736264 106.64967328 -126.59032631 97.95418164 -122.78417969 88.88085938 C-122.16849485 87.40413584 -121.58245757 85.91504722 -121.0078125 84.421875 C-116.29775212 72.66915292 -108.28711054 61.46248169 -100 52 C-99.56993652 51.50435547 -99.13987305 51.00871094 -98.69677734 50.49804688 C-74.3705893 22.64350391 -37.86897307 0 0 0 Z " fill="#FCFCFC" transform="translate(241,108)"/>
+                  <path d="M0 0 C19.77327488 1.16313382 19.77327488 1.16313382 27 3.8125 C27.85537354 4.11309326 28.71074707 4.41368652 29.59204102 4.72338867 C46.43224956 10.87604843 63.12064728 18.51893304 77 30 C77.6098877 30.49612793 78.21977539 30.99225586 78.84814453 31.50341797 C91.59173571 41.94050588 102.20768309 52.96575209 111 67 C111.64066406 67.96292969 112.28132813 68.92585938 112.94140625 69.91796875 C115.95096116 74.47314058 118.55284742 78.7508547 120.265625 83.94140625 C121.13228395 86.37081725 122.24528785 88.61880069 123.375 90.9375 C125.53559626 95.63614607 127.16271122 100.36343006 128.625 105.3125 C128.91576416 106.2878772 128.91576416 106.2878772 129.21240234 107.28295898 C129.84964422 109.51276597 130.42932399 111.75220842 131 114 C131.39819946 115.48947144 131.39819946 115.48947144 131.80444336 117.0090332 C134.03654282 126.14299305 134.43421016 134.78604319 134.33618164 144.15014648 C134.31249188 146.56332759 134.31566063 148.9754028 134.32226562 151.38867188 C134.2858638 171.85762481 129.46016462 190.07604908 122 209 C117.80619817 207.48141885 114.09969022 205.38482408 110.3125 203.0625 C108.9936291 202.25628214 107.67461176 201.4503038 106.35546875 200.64453125 C105.65728027 200.21736816 104.9590918 199.79020508 104.23974609 199.35009766 C101.85999167 197.91560431 99.45820255 196.52422883 97.05078125 195.13671875 C95.40879688 194.17457692 93.76686882 193.21233899 92.125 192.25 C91.33391846 191.80277588 90.54283691 191.35555176 89.7277832 190.89477539 C84.27795947 187.66251987 84.27795947 187.66251987 82.91015625 184.40234375 C83.0248218 181.33628659 84.12657268 178.82507946 85.1640625 175.96484375 C92.95356966 148.33757301 87.61398426 118.42101297 74.04394531 93.77441406 C71.49716056 89.4455947 68.3356877 85.73112295 65 82 C64.33613281 81.19433594 63.67226563 80.38867188 62.98828125 79.55859375 C50.80744055 65.17124216 36.11093882 57.34543943 19 50 C18.31131836 49.7009375 17.62263672 49.401875 16.91308594 49.09375 C11.20373709 46.77169658 6.37866404 46.1597571 0 45 C0 30.15 0 15.3 0 0 Z " fill="#FBFBFB" transform="translate(271,108)"/>
+                </svg>
+              </span>
+              Xopricer
+            </a>
+          </div>
+
+          <!-- Text + Countdown + Form -->
+          <div class="w-100 text-center text-lg-start mt-3 pt-lg-5 pb-5" style="max-width: 420px;">
+            <h1 class="display-3 mb-4">We are coming soon</h1>
+            <p class="fs-lg pb-3 mb-4 mb-xl-5">Get ready for Xopricer , your destination for premium headphones and AirPods that redefine your listening experience. Stay tuned for our grand launch! . Thanks for being a part of our journey!</p>
+
+            <!-- Countdown -->
+            <div class="countdown d-flex flex-wrap justify-content-center justify-content-lg-start pb-3 mb-4 mb-xl-5"  data-countdown-date="{{ site_config.launch_date|date:'m/d/Y H:i:s' }}">
+              <div class="text-center mb-2">
+                <div class="bg-secondary rounded-1 p-2">
+                  <div class="h3 fw-medium mb-0 mx-1" data-days></div>
+                </div>
+                <span class="fs-sm">days</span>
+              </div>
+              <span class="blinking text-body-secondary fs-2 mx-2">:</span>
+              <div class="text-center mb-2">
+                <div class="bg-secondary rounded-1 p-2">
+                  <div class="h3 fw-medium mb-0 mx-1" data-hours></div>
+                </div>
+                <span class="fs-sm">hours</span>
+              </div>
+              <span class="blinking text-body-secondary fs-2 mx-2">:</span>
+              <div class="text-center mb-2">
+                <div class="bg-secondary rounded-1 p-2">
+                  <div class="h3 fw-medium mb-0 mx-1" data-minutes></div>
+                </div>
+                <span class="fs-sm">mins</span>
+              </div>
+              <span class="blinking text-body-secondary fs-2 mx-2">:</span>
+              <div class="text-center mb-2">
+                <div class="bg-secondary rounded-1 p-2">
+                  <div class="h3 fw-medium mb-0 mx-1" data-seconds></div>
+                </div>
+                <span class="fs-sm">secs</span>
+              </div>
+            </div>
+
+            <!-- Notification form -->
+            <form id="subscribe-form" class="input-group">
+              {% csrf_token %}
+              <input type="email" id="email" class="form-control" placeholder="Enter your email" required>
+              <button type="submit" class="btn btn-primary">
+                  <span id="submit-text">Notify me</span>
+                  <span id="loading-spinner" class="spinner-border spinner-border-sm d-none"></span>
+              </button>
+          </form>
+
+          <div id="status-message" class="mt-2"></div>
+          
+          </div>
+
+          <!-- Social links -->
+          <div class="w-100 mt-auto pb-5" style="max-width: 420px;">
+            <div class="d-flex justify-content-center justify-content-lg-start gap-3">
+              {% if site_config.facebook_link %}
+                  <a class="btn btn-icon btn-sm btn-secondary btn-facebook rounded-circle" href="{{ site_config.facebook_link }}" aria-label="Facebook">
+                      <i class="ai-facebook"></i>
+                  </a>
+              {% endif %}
+              {% if site_config.instagram_link %}
+                  <a class="btn btn-icon btn-sm btn-secondary btn-instagram rounded-circle" href="{{ site_config.instagram_link }}" aria-label="Instagram">
+                      <i class="ai-instagram"></i>
+                  </a>
+              {% endif %}
+              {% if site_config.linkedin_link %}
+                  <a class="btn btn-icon btn-sm btn-secondary btn-linkedin rounded-circle" href="{{ site_config.linkedin_link }}" aria-label="LinkedIn">
+                      <i class="ai-linkedin"></i>
+                  </a>
+              {% endif %}
+          </div>
+          
+          </div>
+        </div>
+      </div>
+    </main>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    $("#subscribe-form").submit(function(e) {
+        e.preventDefault();
+        let email = $("#email").val();
+        let submitBtn = $("#subscribe-form button");
+        let statusMessage = $("#status-message");
+
+        // Show spinner and disable button
+        $("#submit-text").addClass("d-none");
+        $("#loading-spinner").removeClass("d-none");
+        submitBtn.prop("disabled", true);
+
+        $.ajax({
+            type: "POST",
+            url: "{% url 'landing:subscribe' %}",
+            data: JSON.stringify({ email: email }),
+            contentType: "application/json",
+            headers: { "X-CSRFToken": "{{ csrf_token }}" },
+            success: function(response) {
+                statusMessage.html(`<div class="alert alert-success">${response.message}</div>`);
+                $("#email").val(""); // Clear input
+            },
+            error: function(xhr) {
+                let errorMsg = JSON.parse(xhr.responseText).message;
+                statusMessage.html(`<div class="alert alert-danger">${errorMsg}</div>`);
+            },
+            complete: function() {
+                // Hide spinner and enable button
+                $("#submit-text").removeClass("d-none");
+                $("#loading-spinner").addClass("d-none");
+                submitBtn.prop("disabled", false);
+            }
+        });
+    });
+});
+</script>
+
+
+
+    <!-- Vendor scripts: JS libraries and plugins -->
+    <script src="{% static 'assets/vendor/timezz/dist/timezz.js' %}"></script>
+    <script src="{% static 'assets/vendor/parallax-js/dist/parallax.min.js' %}"></script>
+
+    <!-- Bootstrap + Theme scripts -->
+    <script src="{% static 'assets/js/theme.min.js' %}"></script>
+
+    <!-- Customizer -->
+    <script src="{% static 'assets/js/customizer.min.js' %}"></script>
+  </body>
+</html>
